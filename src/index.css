@@ -60,3 +60,13 @@ pre {
 ::selection {
   background: rgba(255, 140, 66, 0.3);
 }
+
+/* Shimmer animation for DSA banner */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

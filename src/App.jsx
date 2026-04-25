@@ -69,9 +69,39 @@ export default function App() {
           >
             The Complete Roadmap
           </h1>
-          <p className="text-xs text-[#555] mb-5">
+          <p className="text-xs text-[#555] mb-4">
             Roadmap · Patterns · Interview Questions · Web Essentials · Everything
           </p>
+
+          {/* DSA Promo Banner */}
+          <motion.a
+            href="https://dsaroadmap-mu.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className="inline-flex items-center gap-3 mb-5 px-6 py-3 rounded-xl border text-sm font-bold transition-all group relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,107,107,0.15) 0%, rgba(255,140,66,0.15) 100%)',
+              borderColor: 'rgba(255,107,107,0.5)',
+              color: '#FF8C42',
+              boxShadow: '0 0 30px rgba(255,107,107,0.2), inset 0 1px 0 rgba(255,255,255,0.08)',
+            }}
+          >
+            <span className="absolute inset-0 rounded-xl" style={{
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
+              animation: 'shimmer 2.5s infinite',
+            }} />
+            <span className="text-lg relative z-10">🚀</span>
+            <span className="relative z-10">Best DSA Prep?</span>
+            <span className="underline underline-offset-2 decoration-[#FF6B6B]/60 group-hover:decoration-[#FF6B6B] relative z-10">
+              Go here →
+            </span>
+            <span className="ml-1 text-[10px] px-2 py-0.5 rounded-full bg-[#FF6B6B]/25 text-[#FF6B6B] font-extrabold uppercase tracking-wider border border-[#FF6B6B]/30 relative z-10">
+              Free
+            </span>
+            <span className="relative z-10 text-xs">✨</span>
+          </motion.a>
 
           {/* Track Selector */}
           <div className="flex flex-wrap justify-center gap-2">
