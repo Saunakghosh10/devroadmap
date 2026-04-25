@@ -1,0 +1,16 @@
+export const CONNECTIONS = [
+  { from: "JS Closures", to: "React useState", note: "useState uses closures to remember state between renders" },
+  { from: "JS Promises + async/await", to: "fetch() + REST API", note: "Every API call returns a Promise — async/await wraps it" },
+  { from: "JS Event Loop", to: "Node.js async I/O", note: "Node uses same single-threaded event loop — never blocks" },
+  { from: "TypeScript Generics", to: "React useState<T>", note: "useState<number>(0) ensures state and setter are both number" },
+  { from: "React Server Components", to: "Next.js App Router", note: "App Router is built entirely on React Server Components" },
+  { from: "REST API endpoints", to: "Webhooks", note: "Webhooks = reverse API. They POST to YOUR endpoint on events" },
+  { from: "JWT Auth", to: "OAuth 2.0 / OIDC", note: "OAuth returns a JWT (id_token) containing user identity claims" },
+  { from: "HTTP Request/Response", to: "REST / GraphQL / gRPC", note: "All 3 run over HTTP — just different ways to structure calls" },
+  { from: "HTTP Upgrade", to: "WebSockets", note: "WS starts as HTTP request then upgrades to persistent socket" },
+  { from: "HTTP Keep-Alive", to: "SSE (Server-Sent Events)", note: "SSE is just HTTP with long-lived response and streaming body" },
+  { from: "Redis in-memory store", to: "Rate Limiting + Caching", note: "Redis stores rate limit counters AND cached query results" },
+  { from: "CI/CD Pipeline", to: "Docker Containers", note: "CI builds Docker image → CD deploys container to production" },
+  { from: "Load Balancer", to: "Horizontal Scaling", note: "Add more servers + LB in front = scale to millions of users" },
+  { from: "Message Queue", to: "Microservices", note: "Queues decouple microservices — they never call each other directly" },
+];
