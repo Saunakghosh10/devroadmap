@@ -1,53 +1,47 @@
 export const BACKEND_DATA = {
   roadmap: [
-    { phase: "Phase 1 — Node.js Core", topics: ["Node event loop (libuv)", "Modules: CommonJS vs ESM", "File system (fs), Streams, Buffers", "Environment: process, dotenv"] },
-    { phase: "Phase 2 — Express/Fastify", topics: ["Routing: GET, POST, PUT, DELETE", "Middleware: parsing, CORS, logging", "Error handling middleware (4 params)", "Fastify: schema validation, plugins"] },
-    { phase: "Phase 3 — Databases", topics: ["PostgreSQL with Prisma ORM", "MongoDB with Mongoose", "Redis: caching, sessions, queues", "Transactions & ACID properties"] },
-    { phase: "Phase 4 — Auth & Security", topics: ["JWT: access + refresh tokens", "OAuth 2.0 / OpenID Connect", "Rate limiting, CORS, Helmet", "Input validation: zod/joi"] },
-    { phase: "Phase 5 — Production", topics: ["Docker: containerization", "CI/CD with GitHub Actions", "Logging: Winston/Pino", "Health checks & monitoring"] },
+    { phase: "Phase 1 — Core Architectures", topics: ["RESTful API Principles", "GraphQL (Schemas, Resolvers)", "gRPC & Protocol Buffers", "WebSockets & SSE", "Monoliths vs Microservices"] },
+    { phase: "Phase 2 — Databases & Storage", topics: ["SQL (PostgreSQL, MySQL)", "NoSQL (MongoDB, Cassandra)", "Indexing & Query Optimization", "ACID vs BASE", "Database Sharding & Replication"] },
+    { phase: "Phase 3 — Systems & Infra", topics: ["Caching (Redis, Memcached)", "Message Queues (Kafka, RabbitMQ)", "Docker & Kubernetes", "Load Balancing (Nginx, HAProxy)", "Serverless (AWS Lambda)"] },
+    { phase: "Phase 4 — Security & Auth", topics: ["OAuth 2.0 & OIDC", "JWT & Session Auth", "CORS & CSRF", "HTTPS & TLS", "Rate Limiting & DDoS Protection"] },
+    { phase: "Phase 5 — Testing & DevOps", topics: ["Unit/Integration/E2E Testing", "CI/CD Pipelines", "Monitoring (Prometheus, Grafana)", "Logging (ELK Stack)", "Distributed Tracing"] },
   ],
   patterns: [
-    { name: "🔐 JWT Auth Flow", what: "Stateless auth using signed tokens.", why: "Most common API auth pattern", code: `app.post('/login', async (req, res) => {
-  const user = await verify(req.body);
-  const token = jwt.sign(
-    { userId: user.id }, SECRET, { expiresIn: '15m' }
-  );
-  res.json({ token });
-});
-
-const auth = (req, res, next) => {
-  const t = req.headers.authorization?.split(' ')[1];
-  try { req.user = jwt.verify(t, SECRET); next(); }
-  catch { res.status(401).json({ error: 'Unauthorized' }); }
-};`, interview: "Short-lived access token + long-lived refresh token in httpOnly cookie. Never store in localStorage." },
-    { name: "🗄 Prisma ORM", what: "Type-safe database queries from schema.", why: "Most popular Node.js + TS ORM", code: `// schema.prisma
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  posts Post[]
-}
-
-// Type-safe, auto-generated:
-const user = await prisma.user.findUnique({
-  where: { email: 'hi@test.com' },
-  include: { posts: true }, // JOIN
-});`, interview: "Prisma generates TS types from schema — DB queries are type-safe at compile time." },
-    { name: "🧱 Middleware Chain", what: "Middleware processes request sequentially, call next() to continue.", why: "Core Express architecture", code: `app.use(express.json());
-app.use(cors());
-app.use(rateLimit({ max: 100 }));
-
-app.get('/safe', authMiddleware, handler);
-
-// Error handler — MUST be last, MUST have 4 params:
-app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({ error: err.message });
-});`, interview: "Middleware runs in order. Error handlers are identified by 4 params and must be registered last." },
+    { 
+      name: "📬 Saga Pattern", 
+      what: "A sequence of local transactions where each updates the DB and publishes an event to trigger the next.", 
+      why: "Ensures data consistency across distributed microservices without distributed transactions.", 
+      code: "// Choreography: Service A -> Event -> Service B\n// Orchestration: Manager -> Command -> Service A", 
+      interview: "MAANG: How do you handle a failure in the middle of a Saga (Compensating Transactions)?" 
+    },
+    { 
+      name: "⚡ Rate Limiting", 
+      what: "Restricting the number of requests a user can make to an API in a given time.", 
+      why: "Prevents abuse and ensures service availability.", 
+      code: "Bucket = TokenBucket(rate=10, burst=5);", 
+      interview: "FAANG: Compare Token Bucket vs Leaky Bucket vs Sliding Window algorithms." 
+    }
   ],
   questions: [
-    { q: "What are the main HTTP status codes?", a: "200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 429 Rate Limited, 500 Server Error." },
-    { q: "What is the N+1 query problem?", a: "Fetching N records then querying related data for each = N+1 queries. Solve with eager loading/JOIN. In Prisma: include: { posts: true }." },
-    { q: "CORS — what is it and how do you fix it?", a: "Browser blocks cross-origin requests. Fix: add Access-Control-Allow-Origin header on the server. Use cors() middleware in Express." },
-    { q: "What is ACID?", a: "Atomicity (all-or-nothing), Consistency (valid state), Isolation (concurrent transactions don't interfere), Durability (committed = persisted). Guarantees DB reliability." },
-    { q: "How do you secure a Node.js API?", a: "Helmet, CORS config, rate limiting, input validation (zod), parameterized queries, httpOnly cookies, env vars for secrets, HTTPS." },
+    { q: "What is a RESTful API?", a: "An architectural style for designing networked applications based on stateless, client-server communication using HTTP methods (GET, POST, PUT, DELETE)." },
+    { q: "Explain GraphQL vs REST.", a: "REST has multiple endpoints for different resources. GraphQL has one endpoint where clients specify exactly what data they need, avoiding over-fetching and under-fetching." },
+    { q: "What is horizontal vs vertical scaling?", a: "Vertical scaling means adding more power (CPU/RAM) to an existing server. Horizontal scaling means adding more servers to the pool." },
+    { q: "Explain ACID properties.", a: "Atomicity (all or nothing), Consistency (valid state), Isolation (independent transactions), Durability (persisted results)." },
+    { q: "What is Database Sharding?", a: "Dividing a large database into smaller, faster, more manageable pieces called shards, distributed across multiple servers." },
+    { q: "What is a Load Balancer?", a: "A device or software that distributes network traffic across multiple servers to ensure no single server becomes overwhelmed." },
+    { q: "Explain JWT (JSON Web Token).", a: "A compact, URL-safe means of representing claims to be transferred between two parties. It consists of a Header, Payload, and Signature." },
+    { q: "What is the N+1 problem?", a: "A performance issue in ORMs where the code executes one query to get a list of items, and then N additional queries to get related data for each item. Fixed with 'Eager Loading'." },
+    { q: "Explain CORS (Cross-Origin Resource Sharing).", a: "A security feature that allows servers to specify which origins are permitted to access their resources via a browser." },
+    { q: "What is a Message Queue?", a: "A form of asynchronous service-to-service communication used in serverless and microservices architectures (e.g., RabbitMQ, Kafka)." },
+    { q: "What is the difference between SQL and NoSQL?", a: "SQL databases are relational, have fixed schemas, and excel at complex joins. NoSQL databases are non-relational, have dynamic schemas, and excel at scaling for unstructured data." },
+    { q: "Explain CAP Theorem.", a: "In a distributed system, you can only provide two out of three guarantees: Consistency, Availability, and Partition Tolerance." },
+    { q: "What is a Reverse Proxy?", a: "A server (like Nginx) that sits in front of backend servers and forwards client requests to them, often providing security, caching, and load balancing." },
+    { q: "What is the difference between gRPC and REST?", a: "gRPC uses Protocol Buffers (binary) and HTTP/2 for faster communication. REST uses JSON (text) and usually HTTP/1.1." },
+    { q: "Explain Docker containerization.", a: "Packaging an application and its dependencies into a single 'container' that runs consistently on any environment." },
+    { q: "What is a Deadlock?", a: "A situation where two or more transactions are waiting for each other to release locks, causing both to be stuck indefinitely." },
+    { q: "Explain Serverless Computing.", a: "A model where the cloud provider manages the infrastructure and automatically scales the resources, and you only pay for actual execution time." },
+    { q: "What is an Index in a database?", a: "A data structure that improves the speed of data retrieval operations at the cost of slower writes and additional storage space." },
+    { q: "Explain Microservices architecture.", a: "Designing an application as a collection of small, independent services that communicate over a network." },
+    { q: "What is the difference between Authentication and Authorization?", a: "Authentication is verifying who a user is. Authorization is verifying what a user is allowed to do." }
   ]
 };
